@@ -1,5 +1,12 @@
 import javax.swing.*;
 
+//implement mouse reader
+//implement key reader DONE
+//making a menu interface in another panel linking to this one
+//making score board?
+//gib coin after 5 score? coin to unlock new bird? store?
+
+
 public class App {
     public static void main(String[] args) throws Exception {
         int boardWidth = 360;
