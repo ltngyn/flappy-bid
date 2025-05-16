@@ -40,7 +40,7 @@ public class Menu {
         startButton.setBounds(90, 300, 180, 50); // Adjust position & size
         startButton.setFont(new Font("Arial", Font.BOLD, 30));
         startButton.setFocusPainted(false);
-        startButton.setBorderPainted(false);
+        startButton.setBorderPainted(true);
         startButton.setOpaque(false);
 
         //Quit button
@@ -48,7 +48,7 @@ public class Menu {
         endButton.setBounds(90, 380, 180, 50);
         endButton.setFont(new Font("Arial", Font.BOLD, 30));
         endButton.setFocusPainted(false);
-        endButton.setBorderPainted(false);
+        endButton.setBorderPainted(true);
         endButton.setOpaque(false);
 
         // Add components in proper order
