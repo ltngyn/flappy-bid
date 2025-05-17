@@ -7,6 +7,7 @@ public class Menu extends JPanel {
     private JButton helpButton;
     private JButton quitButton;
     private JPanel helpPanel;
+    private JButton helpCloseButton;
 
     public Menu(JFrame parentFrame) {
         setLayout(null);
@@ -43,7 +44,6 @@ public class Menu extends JPanel {
         helpPanel.setVisible(false);
         layer.add(helpPanel, Integer.valueOf(7));
         
-
         // Start button
         startButton = new JButton("START");
         startButton.setBounds(90, 320, 180, 50);
@@ -64,7 +64,6 @@ public class Menu extends JPanel {
             gameFrame.setVisible(true);
         });
 
-
         // Help button
         helpButton = new JButton("HELP");
         helpButton.setBounds(90, 380, 180, 50);
@@ -74,9 +73,26 @@ public class Menu extends JPanel {
 
         helpButton.addActionListener(e -> {
             helpPanel.setVisible(true);
-            // helpButton.setEnabled(false);
-            // startButton.setEnabled(false);
-            // quitButton.setEnabled(false);
+            helpCloseButton.setVisible(true);
+            helpButton.setEnabled(false);
+            startButton.setEnabled(false);
+            quitButton.setEnabled(false);
+        });
+
+        // Close help panel button 
+        helpCloseButton = new JButton(new ImageIcon("xCloseIcon.png"));
+        helpCloseButton.setBounds(265, 165, 30, 30);
+        helpCloseButton.setFocusable(false);
+        helpCloseButton.setBackground(new Color(250, 55, 55)); 
+        helpCloseButton.setVisible(false);  
+        layer.add(helpCloseButton, Integer.valueOf(8));
+
+        helpCloseButton.addActionListener(e -> {
+            helpPanel.setVisible(false);
+            helpCloseButton.setVisible(false);
+            helpButton.setEnabled(true);
+            startButton.setEnabled(true);
+            quitButton.setEnabled(true);
         });
 
         // Quit button
@@ -87,7 +103,6 @@ public class Menu extends JPanel {
         layer.add(quitButton, Integer.valueOf(6));
 
         quitButton.addActionListener(e -> System.exit(0));
-
         
     }
 }
