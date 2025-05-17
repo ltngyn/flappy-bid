@@ -6,10 +6,9 @@ import javax.swing.*;
 //making score board?
 //gib coin after 5 score? coin to unlock new bird? store?
 
-
 public class App {
     public static void main(String[] args) throws Exception {
-        JFrame frame = new JFrame("Flappy Bird - Menu");
+        JFrame frame = new JFrame("Flappy Bird");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.add(new Menu(frame));
@@ -18,4 +17,5 @@ public class App {
         frame.setVisible(true);
     }
 }
+
 
