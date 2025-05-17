@@ -24,11 +24,32 @@ public class Menu extends JPanel {
         background.setLayout(null);
         layer.add(background, Integer.valueOf(1));
 
-        //Cloud 
-        JLabel cloud = new JLabel(new ImageIcon("cloud.png"));
-        cloud.setBounds(0, -80, 360, 640);
-        // cloud.setLayout(null);
-        layer.add(cloud, Integer.valueOf(2));
+        // Two cloud layers for seamless looping
+        JLabel cloud1 = new JLabel(new ImageIcon("cloud.png"));
+        cloud1.setBounds(0, -80, 360, 640);
+        layer.add(cloud1, Integer.valueOf(2));
+
+        JLabel cloud2 = new JLabel(new ImageIcon("cloud.png"));
+        cloud2.setBounds(360, -80, 360, 640);
+        layer.add(cloud2, Integer.valueOf(2));
+
+        // Timer to move both clouds leftward for a seamless scroll
+        Timer cloudTimer = new Timer(20, e -> {
+            int speed = 1;
+
+            cloud1.setLocation(cloud1.getX() - speed, cloud1.getY());
+            cloud2.setLocation(cloud2.getX() - speed, cloud2.getY());
+
+            // Reset positions when a cloud moves off screen
+            if (cloud1.getX() + 360 <= 0) {
+                cloud1.setLocation(cloud2.getX() + 360, cloud1.getY());
+            }
+            if (cloud2.getX() + 360 <= 0) {
+                cloud2.setLocation(cloud1.getX() + 360, cloud2.getY());
+            }
+        });
+        cloudTimer.start();
+
 
         // Title
         JLabel title = new JLabel("FLAPPY BIRD");
