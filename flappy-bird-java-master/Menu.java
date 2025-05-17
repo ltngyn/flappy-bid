@@ -36,13 +36,6 @@ public class Menu extends JPanel {
         title.setFont(new Font("Arial", Font.BOLD, 40));
         title.setBounds(50, 50, 300, 50);
         layer.add(title, Integer.valueOf(3));
-
-        // Help panel
-        helpPanel = new JPanel();
-        helpPanel.setBounds(55, 160, 245, 400);
-        helpPanel.setBackground(new Color(198, 234, 242));
-        helpPanel.setVisible(false);
-        layer.add(helpPanel, Integer.valueOf(7));
         
         // Start button
         startButton = new JButton("START");
@@ -59,7 +52,7 @@ public class Menu extends JPanel {
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.setResizable(false);
             gameFrame.add(new FlappyBird());
-            gameFrame.pack();
+            gameFrame.pack();   
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setVisible(true);
         });
@@ -78,6 +71,42 @@ public class Menu extends JPanel {
             startButton.setEnabled(false);
             quitButton.setEnabled(false);
         });
+
+        // Help panel
+        helpPanel = new JPanel();
+        helpPanel.setBounds(55, 160, 245, 400);
+        helpPanel.setBackground(new Color(198, 234, 242));
+        helpPanel.setVisible(false);
+        helpPanel.setLayout(null); // Important for absolute positioning
+        layer.add(helpPanel, Integer.valueOf(7));
+
+        // Help panel title
+        JLabel helpTittle = new JLabel("TUTORIAL");
+        helpTittle.setFont(new Font("Arial", Font.ITALIC, 29));
+        helpTittle.setBounds(40, 10, 200, 40); // Now positioned manually
+        helpPanel.add(helpTittle);
+
+        // Font and color
+        Font font = new Font("Arial", Font.PLAIN, 23);
+        Color color = new Color(26, 57, 100);
+
+        // Help text
+        String[] helpLine = {
+            "Press SPACE or",
+            "LEFT MOUSE ",
+            "BUTTON to play.",
+            "ESC to exit game.",
+        };
+
+        // Add text labels
+        for (int i = 0; i < helpLine.length; i++) {
+            JLabel text = new JLabel(helpLine[i]);
+            text.setFont(font);
+            text.setForeground(color);
+            text.setBounds(20, 60 + i * 40, 225, 30);
+            helpPanel.add(text);
+        }
+
 
         // Close help panel button 
         helpCloseButton = new JButton(new ImageIcon("xCloseIcon.png"));
