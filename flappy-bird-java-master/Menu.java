@@ -63,6 +63,7 @@ public class Menu extends JPanel {
         startButton.setBounds(90, 320, 180, 50);
         startButton.setFont(new Font("Arial", Font.BOLD, 30));
         startButton.setFocusable(false);
+        startButton.setEnabled(false);
         layer.add(startButton, Integer.valueOf(4));
 
         // Start button action
@@ -72,7 +73,7 @@ public class Menu extends JPanel {
             JFrame gameFrame = new JFrame("Flappy Bird");
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.setResizable(false);
-            gameFrame.add(new FlappyBird());
+            gameFrame.add(new FlappyBird(gameFrame));
             gameFrame.pack();   
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setVisible(true);
