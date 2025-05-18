@@ -1,17 +1,21 @@
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-public class Menu extends JPanel {
+public class Menu extends JPanel implements KeyListener{
     private JButton startButton;
     private JButton helpButton;
     private JButton quitButton;
     private JPanel helpPanel;
     private JButton helpCloseButton;
+    private boolean help = false;
 
     public Menu(JFrame parentFrame) {
         setLayout(null);
         setPreferredSize(new Dimension(360, 640));
+        addKeyListener(this);
 
         //Layer
         JLayeredPane layer = new JLayeredPane();
@@ -87,6 +91,7 @@ public class Menu extends JPanel {
         layer.add(helpButton, Integer.valueOf(5));
 
         helpButton.addActionListener(e -> {
+            help = true;
             helpPanel.setVisible(true);
             helpCloseButton.setVisible(true);
             helpButton.setEnabled(false);
@@ -116,8 +121,10 @@ public class Menu extends JPanel {
         String[] helpLine = {
             "Press SPACE or",
             "LEFT MOUSE ",
-            "BUTTON to play.",
-            "ESC to exit game.",
+            "BUTTON to PLAY.",
+            "ESC or RIGHT.",
+            "MOUSE BUTTON",
+            "to PAUSE."
         };
 
         // Add text labels
@@ -144,6 +151,7 @@ public class Menu extends JPanel {
             helpButton.setEnabled(true);
             startButton.setEnabled(true);
             quitButton.setEnabled(true);
+            help = false;
         });
 
         // Quit button
@@ -156,4 +164,29 @@ public class Menu extends JPanel {
         quitButton.addActionListener(e -> System.exit(0));
         
     }
+
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        requestFocusInWindow();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (help) {
+                helpPanel.setVisible(false);
+                helpCloseButton.setVisible(false);
+                helpButton.setEnabled(true);
+                startButton.setEnabled(true);
+                quitButton.setEnabled(true);
+                help = false;
+            } else {
+                System.exit(0);
+            }
+        }
+    }
+
+    @Override public void keyTyped(KeyEvent e) {}
+    @Override public void keyReleased(KeyEvent e) {}
 }
