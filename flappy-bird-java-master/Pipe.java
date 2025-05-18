@@ -5,6 +5,7 @@ public class Pipe {
     public int x, y, width, height;
     public Image img;
     public boolean passed = false;
+    private float velocityX = -3;
 
     public Pipe(int x, int y, int width, int height, Image img) {
         this.x = x;
@@ -17,4 +18,9 @@ public class Pipe {
     public void draw(Graphics g) {
         g.drawImage(img, x, y, width, height, null);
     }
+
+    public void update() {
+        x += velocityX;
+    }
 }
+
