@@ -17,7 +17,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
     boolean pause = false;
     JPanel pausePanel;
-    JButton continueButton, restartButton, menuButton;
+    JButton continueButton, restartButton, menuButton, quitButton;
 
     Bird bird;
     ArrayList<Pipe> pipes;
@@ -77,13 +77,21 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         pausePanel = new JPanel();
         pausePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
         pausePanel.setBackground(new Color(0, 0, 0, 200)); // semi-transparent black
-        pausePanel.setBounds(80, 250, 200, 120); // position in the middle of the game
+        pausePanel.setBounds(80, 250, 200, 150); // position in the middle of the game
         pausePanel.setVisible(false);
         pausePanel.setOpaque(true);
 
         continueButton = new JButton("Continue");
         restartButton = new JButton("Restart");
         menuButton = new JButton("Back to Menu");
+        quitButton = new JButton("Quit");
+
+        // Set button size
+        Dimension buttonSize = new Dimension(150, 25);
+        continueButton.setPreferredSize(buttonSize);
+        restartButton.setPreferredSize(buttonSize);
+        menuButton.setPreferredSize(buttonSize);
+        quitButton.setPreferredSize(buttonSize);
 
         countdownLabel = new JLabel("", SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 36));
@@ -95,41 +103,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         pausePanel.add(continueButton);
         pausePanel.add(restartButton);
         pausePanel.add(menuButton);
+        pausePanel.add(quitButton);
 
         // Add buttons’ functionality
         continueButton.addActionListener(e -> {
-            continueButton.setEnabled(false);
-            restartButton.setEnabled(false);
-            menuButton.setEnabled(false);
-            pausePanel.setVisible(false);
-
-            countdownLabel.setText("3");
-            countdownLabel.setVisible(true);
-
-            final int[] count = {3};
-
-            Timer countdownTimer = new Timer(1000, null);
-            countdownTimer.addActionListener(evt -> {
-                count[0]--;
-                if (count[0] > 0) {
-                    countdownLabel.setText(String.valueOf(count[0]));
-                } else {
-                    // Countdown finished, resume game
-                    countdownTimer.stop();
-                    countdownLabel.setVisible(false);
-                    // pausePanel.setVisible(false);
-                    pause = false;
-
-                    gameLoop.start();
-                    placePipeTimer.start();
-
-                    continueButton.setEnabled(true);
-                    restartButton.setEnabled(true);
-                    menuButton.setEnabled(true);
-                }
-            });
-            countdownTimer.setInitialDelay(1000); // start after 1 sec
-            countdownTimer.start();
+            resumeGameWithCountdown();
         });
 
 
@@ -157,6 +135,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             // Refresh the frame to show the menu
             gameFrame.revalidate();
             gameFrame.repaint();
+        });
+
+        quitButton.addActionListener(e -> {
+            System.exit(0);
         });
 
         // Use null layout to position pause panel freely
@@ -199,7 +181,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         g.setFont(new Font("Arial", Font.PLAIN, 32));
 
         if (!gameStarted) {
-            g.drawString("READY", 125, boardHeight / 2 - 50);
+            g.drawString("READY!!!", 120, boardHeight / 2 - 50);
         } else if (gameOver) {
             g.drawString("Game Over: " + (int) score, 10, 35);
         } else {
@@ -287,42 +269,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             pause = !pause;
 
             if (pause) {
-                gameLoop.stop();
-                placePipeTimer.stop();
-                pausePanel.setVisible(true);
+                pauseGame();
             } else {
-                continueButton.setEnabled(false);
-                restartButton.setEnabled(false);
-                menuButton.setEnabled(false);
-                pausePanel.setVisible(false);
-
-                countdownLabel.setText("3");
-                countdownLabel.setVisible(true);
-
-                final int[] count = {3};
-
-                Timer countdownTimer = new Timer(1000, null);
-                countdownTimer.addActionListener(evt -> {
-                    count[0]--;
-                    if (count[0] > 0) {
-                        countdownLabel.setText(String.valueOf(count[0]));
-                    } else {
-                        // Countdown finished, resume game
-                        countdownTimer.stop();
-                        countdownLabel.setVisible(false);
-                        // pausePanel.setVisible(false);
-                        pause = false;
-
-                        gameLoop.start();
-                        placePipeTimer.start();
-
-                        continueButton.setEnabled(true);
-                        restartButton.setEnabled(true);
-                        menuButton.setEnabled(true);
-                    }
-                });
-                countdownTimer.setInitialDelay(1000); // start after 1 sec
-                countdownTimer.start();
+                resumeGameWithCountdown();
             }
         }
     }
@@ -349,48 +298,70 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 repaint();
             }
         }
-        if (e.getButton() == MouseEvent.BUTTON3) {
+        if (e.getButton() == MouseEvent.BUTTON3 && !gameOver && gameStarted) {
             pause = !pause;
 
             if (pause) {
-                gameLoop.stop();
-                placePipeTimer.stop();
-                pausePanel.setVisible(true);
+                pauseGame();
             } else {
-                continueButton.setEnabled(false);
-                restartButton.setEnabled(false);
-                menuButton.setEnabled(false);
-                pausePanel.setVisible(false);
-
-                countdownLabel.setText("3");
-                countdownLabel.setVisible(true);
-
-                final int[] count = {3};
-
-                Timer countdownTimer = new Timer(1000, null);
-                countdownTimer.addActionListener(evt -> {
-                    count[0]--;
-                    if (count[0] > 0) {
-                        countdownLabel.setText(String.valueOf(count[0]));
-                    } else {
-                        // Countdown finished, resume game
-                        countdownTimer.stop();
-                        countdownLabel.setVisible(false);
-                        // pausePanel.setVisible(false);
-                        pause = false;
-
-                        gameLoop.start();
-                        placePipeTimer.start();
-
-                        continueButton.setEnabled(true);
-                        restartButton.setEnabled(true);
-                        menuButton.setEnabled(true);
-                    }
-                });
-                countdownTimer.setInitialDelay(1000); // start after 1 sec
-                countdownTimer.start();
+                resumeGameWithCountdown();
             }
         }
+    }
+
+    public void pauseGame() {
+        gameLoop.stop();
+        placePipeTimer.stop();
+        pausePanel.setVisible(true);
+    }
+
+    public void resumeGameWithCountdown() {
+        continueButton.setEnabled(false);
+        restartButton.setEnabled(false);
+        menuButton.setEnabled(false);
+        quitButton.setEnabled(false);
+        pausePanel.setVisible(false);
+
+        countdownLabel.setText("3");
+        countdownLabel.setVisible(true);
+        final int[] count = {3};
+        Timer countdownTimer = new Timer(1000, null);
+        countdownTimer.addActionListener(evt -> {
+            count[0]--;
+            if (count[0] > 0) {
+                countdownLabel.setText(String.valueOf(count[0]));
+            } else {
+                // Countdown finished, resume game
+                countdownTimer.stop();
+                countdownLabel.setVisible(false);
+                // pausePanel.setVisible(false);
+                pause = false;
+                gameLoop.start();
+                placePipeTimer.start();
+                continueButton.setEnabled(true);
+                restartButton.setEnabled(true);
+                menuButton.setEnabled(true);
+                quitButton.setEnabled(true);
+            }
+        });
+        countdownTimer.setInitialDelay(1000); // start after 1 sec
+        countdownTimer.start();
+    }
+
+    public void resumeGameWithoutCountdown() {
+        continueButton.setEnabled(false);
+        restartButton.setEnabled(false);
+        menuButton.setEnabled(false);
+        quitButton.setEnabled(false);
+        pausePanel.setVisible(false);
+
+        pause = false;
+        gameLoop.start();
+        placePipeTimer.start();
+        continueButton.setEnabled(true);
+        restartButton.setEnabled(true);
+        quitButton.setEnabled(true);
+        menuButton.setEnabled(true);
     }
 
     public void cleanUp() {
