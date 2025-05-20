@@ -129,7 +129,23 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         // Add buttons’ functionality
         continueButton.addActionListener(e -> {
-            resumeGameWithCountdown();
+            if (gameStarted) {
+                pause = !pause;
+
+                if (pause) {
+                    pauseGame();
+                } else {
+                    resumeGameWithCountdown();
+                }
+            } else {
+                pause = !pause;
+
+                if (pause) {
+                    pauseGame();
+                } else {
+                    resumeGameWithoutCountdown();
+                }
+            }    
         });
 
 
@@ -206,9 +222,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         if (!gameStarted) {
             g.drawString("READY!!!", 120, boardHeight / 2 - 50);
         } else if (gameOver) {
-            g.drawString("Game Over: " + (int) score, 10, 35);
+            g.drawString("Game Over: " + (int) score, 10, 45);
         } else {
-            g.drawString(String.valueOf((int) score), 10, 35);
+            g.drawString(String.valueOf((int) score), 10, 45);
         }
     }
 
@@ -292,14 +308,24 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameStarted = false;
                 repaint();
             }
-        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && gameStarted && !gameOver) {
-            pause = !pause;
+        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && !gameOver) {
+            if (gameStarted) {
+                pause = !pause;
 
-            if (pause) {
-                pauseGame();
+                if (pause) {
+                    pauseGame();
+                } else {
+                    resumeGameWithCountdown();
+                }
             } else {
-                resumeGameWithCountdown();
-            }
+                pause = !pause;
+
+                if (pause) {
+                    pauseGame();
+                } else {
+                    resumeGameWithoutCountdown();
+                }
+            }    
         }
     }
 
@@ -327,14 +353,24 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 repaint();
             }
         }
-        if (e.getButton() == MouseEvent.BUTTON3 && !gameOver && gameStarted) {
-            pause = !pause;
+        if (e.getButton() == MouseEvent.BUTTON3 && !gameOver) {
+            if (gameStarted) {
+                pause = !pause;
 
-            if (pause) {
-                pauseGame();
+                if (pause) {
+                    pauseGame();
+                } else {
+                    resumeGameWithCountdown();
+                }
             } else {
-                resumeGameWithCountdown();
-            }
+                pause = !pause;
+
+                if (pause) {
+                    pauseGame();
+                } else {
+                    resumeGameWithoutCountdown();
+                }
+            }    
         }
     }
 
@@ -378,20 +414,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     }
 
     public void resumeGameWithoutCountdown() {
-        continueButton.setEnabled(false);
-        restartButton.setEnabled(false);
-        menuButton.setEnabled(false);
-        quitButton.setEnabled(false);
-        pausePanel.setVisible(false);
-
-        pause = false;
         gameLoop.start();
         placePipeTimer.start();
-        continueButton.setEnabled(true);
-        restartButton.setEnabled(true);
-        quitButton.setEnabled(true);
-        menuButton.setEnabled(true);
+        pausePanel.setVisible(false);
     }
+
 
     public void cleanUp() {
         gameLoop.stop();
