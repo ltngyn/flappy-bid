@@ -20,7 +20,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     JButton continueButton, restartButton, menuButton, quitButton;
 
     JPanel resultPanel;
-    JButton resultRestartButton, resultMenuButton;
+    JButton resultRestartButton, resultMenuButton, resultQuitButton;
+    JLabel resultScore, resultHighScore;
 
     Bird bird;
     ArrayList<Pipe> pipes;
@@ -54,6 +55,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     boolean gameStarted = false;
     double score = 0;
 
+    int highScore= 0;
+
     Random random = new Random();
 
     public FlappyBird(JFrame gameFrame) {
@@ -61,6 +64,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
+        loadHighScore();
 
         // Load assets
         movingBackgroundImg = new ImageIcon(getClass().getResource("./flappybirdbg.png")).getImage();
@@ -77,7 +81,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         gameLoop = new Timer(1000 / 60, this);
         gameLoop.start();
    
-
         pausePanel = new JPanel();
         pausePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
         pausePanel.setBackground(new Color(0, 0, 0, 200)); // semi-transparent black
@@ -130,7 +133,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             }    
         });
 
-
         restartButton.addActionListener(e -> {
             pause = false;
             pausePanel.setVisible(false);
@@ -169,18 +171,63 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         resultPanel.setVisible(false);
         resultPanel.setOpaque(true);
 
-        resultRestartButton = new JButton();
-        resultRestartButton.setBounds( 145, 180, 125, 30);
-        resultRestartButton.setLayout(null);
-        resultRestartButton.setFocusable(false);
-        resultPanel.add(resultRestartButton);
+        resultQuitButton = new JButton("QUIT");
+        resultQuitButton.setBounds( 145, 145, 125, 30);
+        resultQuitButton.setLayout(null);
+        resultQuitButton.setFocusable(false);
+        resultPanel.add(resultQuitButton);
 
-        resultMenuButton = new JButton();
-        resultMenuButton.setBounds(10, 180, 125, 30);
+        resultQuitButton.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        resultMenuButton = new JButton("MAIN MENU");
+        resultMenuButton.setBounds(10, 145, 125, 30);
         resultMenuButton.setLayout(null);
         resultMenuButton.setFocusable(false);
         resultPanel.add(resultMenuButton);
 
+        resultMenuButton.addActionListener(e -> {
+            cleanUp();
+
+            gameFrame.getContentPane().removeAll();
+
+            gameFrame.add(new Menu(gameFrame));
+
+            gameFrame.revalidate();
+            gameFrame.repaint();
+        });
+        
+        resultRestartButton = new JButton("RESTART");
+        resultRestartButton.setBounds( 10, 180, 260, 30);
+        resultRestartButton.setLayout(null);
+        resultRestartButton.setFocusable(false);
+        resultPanel.add(resultRestartButton);
+
+        resultRestartButton.addActionListener(e -> {
+            resultPanel.setVisible(false);
+            gameOver = false;
+            gameStarted = false;
+            pipes.clear();
+            score = 0;
+            bird.reset(birdY);
+            repaint();
+        });  
+
+        JLabel resultTitle = new JLabel("GAME OVER");
+        resultTitle.setFont(new Font("Arial", Font.ITALIC, 29));
+        resultTitle.setBounds(50, 10, 200, 40); // Now positioned manually
+        resultPanel.add(resultTitle);
+
+        resultHighScore = new JLabel("HIGHSCORE: " + highScore);
+        resultHighScore.setFont(new Font("Arial", Font.BOLD, 27));
+        resultHighScore.setBounds(20, 50, 300, 40); // Now positioned manually
+        resultPanel.add(resultHighScore);
+
+        resultScore = new JLabel("SCORE: " + (int) score);
+        resultScore.setFont(new Font("Arial", Font.PLAIN, 27));
+        resultScore.setBounds(20, 90, 200, 40); // Now positioned manually
+        resultPanel.add(resultScore);
 
         // Use null layout to position pause panel freely
         setLayout(null);
@@ -225,8 +272,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         if (!gameStarted) {
             g.drawString("READY!!!", 120, boardHeight / 2 - 50);
-        } else if (gameOver) {
-            g.drawString("Game Over: " + (int) score, 10, 45);
+        // } else if (gameOver) {
+        //     g.drawString("SCORE: " + (int) score, 50, 200);
         } else {
             g.drawString(String.valueOf((int) score), 10, 45);
         }
@@ -283,6 +330,18 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             if (gameOver) {
                 gameLoop.stop();
                 placePipeTimer.stop();
+                // resultScore.setText("SCORE: " + (int) score);
+                // resultPanel.setVisible(true);
+
+                int currentScore = (int) score;
+                resultScore.setText("SCORE: " + currentScore);
+
+                if (currentScore > highScore) {
+                    highScore = currentScore;
+                    saveHighScore();
+                }
+
+                resultHighScore.setText("HIGHSCORE: " + highScore);
                 resultPanel.setVisible(true);
             }           
         }
@@ -426,6 +485,31 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         placePipeTimer.stop();
         removeKeyListener(this);
         removeMouseListener(this);
+    }
+
+    public void loadHighScore() {
+        try {
+            java.io.File file = new java.io.File("highscore.txt");
+            if (file.exists()) {
+                java.util.Scanner scanner = new java.util.Scanner(file);
+                if (scanner.hasNextInt()) {
+                    highScore = scanner.nextInt();
+                }
+                scanner.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveHighScore() {
+        try {
+            java.io.PrintWriter writer = new java.io.PrintWriter("highscore.txt");
+            writer.println(highScore);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override public void keyTyped(KeyEvent e) {}
