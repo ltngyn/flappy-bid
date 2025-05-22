@@ -160,9 +160,19 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             System.exit(0);
         });
 
+        resultPanel = new JPanel();
+        resultPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
+        resultPanel.setBackground(new Color(0, 190, 23)); // semi-transparent black
+        resultPanel.setBounds(45, 150, 280, 220); // position in the middle of the game
+        resultPanel.setBorder(BorderFactory.createRaisedBevelBorder());
+        resultPanel.setVisible(false);
+        resultPanel.setOpaque(true);
+
+
         // Use null layout to position pause panel freely
         setLayout(null);
         add(pausePanel);
+        add(resultPanel);
     }
 
     void placePipes() {
@@ -259,7 +269,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             if (gameOver) {
                 gameLoop.stop();
                 placePipeTimer.stop();
-
+                resultPanel.setVisible(true);
             }           
         }
     }
@@ -272,6 +282,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameStarted = true;
                 gameLoop.start();
                 placePipeTimer.start();
+                
             }
 
             bird.jump();
@@ -283,6 +294,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameOver = false;
                 score = 0;
                 gameStarted = false;
+                resultPanel.setVisible(false);
                 repaint();
             }
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && !gameOver) {
@@ -325,6 +337,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameOver = false;
                 score = 0;
                 gameStarted = false;
+                resultPanel.setVisible(false);
                 repaint();
             }
         }
@@ -394,14 +407,12 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         pausePanel.setVisible(false);
     }
 
-
     public void cleanUp() {
         gameLoop.stop();
         placePipeTimer.stop();
         removeKeyListener(this);
         removeMouseListener(this);
     }
-
 
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void keyReleased(KeyEvent e) {}
