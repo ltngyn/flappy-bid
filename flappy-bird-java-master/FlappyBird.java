@@ -20,6 +20,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     JButton continueButton, restartButton, menuButton, quitButton;
 
     JPanel resultPanel;
+    JButton resultRestartButton, resultMenuButton;
 
     Bird bird;
     ArrayList<Pipe> pipes;
@@ -86,7 +87,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         continueButton = new JButton("Continue");
         restartButton = new JButton("Restart");
-        menuButton = new JButton("Back to Menu");
+        menuButton = new JButton("Main Menu");
         quitButton = new JButton("Quit");
 
         // Set button size
@@ -161,16 +162,29 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         });
 
         resultPanel = new JPanel();
-        resultPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
+        resultPanel.setLayout(null);
         resultPanel.setBackground(new Color(0, 190, 23)); // semi-transparent black
         resultPanel.setBounds(45, 150, 280, 220); // position in the middle of the game
         resultPanel.setBorder(BorderFactory.createRaisedBevelBorder());
         resultPanel.setVisible(false);
         resultPanel.setOpaque(true);
 
+        resultRestartButton = new JButton();
+        resultRestartButton.setBounds( 145, 180, 125, 30);
+        resultRestartButton.setLayout(null);
+        resultRestartButton.setFocusable(false);
+        resultPanel.add(resultRestartButton);
+
+        resultMenuButton = new JButton();
+        resultMenuButton.setBounds(10, 180, 125, 30);
+        resultMenuButton.setLayout(null);
+        resultMenuButton.setFocusable(false);
+        resultPanel.add(resultMenuButton);
+
 
         // Use null layout to position pause panel freely
         setLayout(null);
+        
         add(pausePanel);
         add(resultPanel);
     }
