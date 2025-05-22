@@ -67,7 +67,7 @@ public class Menu extends JPanel implements KeyListener{
         startButton.setBounds(90, 320, 180, 50);
         startButton.setFont(new Font("Arial", Font.BOLD, 30));
         startButton.setFocusable(false);
-        startButton.setEnabled(false);
+        startButton.setEnabled(true);
         layer.add(startButton, Integer.valueOf(4));
 
         // Start button action
@@ -95,7 +95,7 @@ public class Menu extends JPanel implements KeyListener{
             helpPanel.setVisible(true);
             helpCloseButton.setVisible(true);
             helpButton.setEnabled(false);
-            startButton.setEnabled(false);
+            // startButton.setEnabled(false);
             quitButton.setEnabled(false);
         });
 
@@ -149,7 +149,7 @@ public class Menu extends JPanel implements KeyListener{
             helpPanel.setVisible(false);
             helpCloseButton.setVisible(false);
             helpButton.setEnabled(true);
-            startButton.setEnabled(true);
+            // startButton.setEnabled(true);
             quitButton.setEnabled(true);
             help = false;
         });
@@ -178,7 +178,7 @@ public class Menu extends JPanel implements KeyListener{
                 helpPanel.setVisible(false);
                 helpCloseButton.setVisible(false);
                 helpButton.setEnabled(true);
-                startButton.setEnabled(true);
+                // startButton.setEnabled(true);
                 quitButton.setEnabled(true);
                 help = false;
             } else {
