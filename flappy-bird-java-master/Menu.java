@@ -5,6 +5,8 @@ import java.awt.event.KeyListener;
 import javax.swing.*;
 
 public class Menu extends JPanel implements KeyListener{
+    private JFrame parentFrame;
+
     private JButton startButton;
     private JButton helpButton;
     private JButton quitButton;
@@ -13,6 +15,7 @@ public class Menu extends JPanel implements KeyListener{
     private boolean help = false;
 
     public Menu(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
         setLayout(null);
         setPreferredSize(new Dimension(360, 640));
         addKeyListener(this);
@@ -72,15 +75,7 @@ public class Menu extends JPanel implements KeyListener{
 
         // Start button action
         startButton.addActionListener(e -> {
-            parentFrame.dispose(); // Close menu window
-
-            JFrame gameFrame = new JFrame("Flappy Bird");
-            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            gameFrame.setResizable(false);
-            gameFrame.add(new FlappyBird(gameFrame));
-            gameFrame.pack();   
-            gameFrame.setLocationRelativeTo(null);
-            gameFrame.setVisible(true);
+            launchGame();
         });
 
         // Help button
@@ -165,6 +160,18 @@ public class Menu extends JPanel implements KeyListener{
         
     }
 
+    public void launchGame() {
+        parentFrame.dispose();
+
+        JFrame gameFrame = new JFrame("Flappy Bird");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setResizable(false);
+        gameFrame.add(new FlappyBird(gameFrame));
+        gameFrame.pack();   
+        gameFrame.setLocationRelativeTo(null);
+        gameFrame.setVisible(true);
+    }
+
     @Override
     public void addNotify() {
         super.addNotify();
@@ -183,6 +190,12 @@ public class Menu extends JPanel implements KeyListener{
                 help = false;
             } else {
                 System.exit(0);
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if(!help) {
+                launchGame();
             }
         }
     }
