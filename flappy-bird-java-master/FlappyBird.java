@@ -13,13 +13,13 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     Image topPipeImg;
     Image bottomPipeImg;
 
-    JButton pauseButton;
-
     JLabel countdownLabel;
 
     boolean pause = false;
     JPanel pausePanel;
     JButton continueButton, restartButton, menuButton, quitButton;
+
+    JPanel resultPanel;
 
     Bird bird;
     ArrayList<Pipe> pipes;
@@ -75,26 +75,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         gameLoop = new Timer(1000 / 60, this);
         gameLoop.start();
-
-        pauseButton = new JButton(new ImageIcon("pauseIcon.png"));
-        pauseButton.setBounds(310, 20, 32, 32);
-        pauseButton.setFocusable(false);    
-
-        if (gameStarted) {
-            pauseButton.addActionListener(e -> {
-                pause = !pause;
-
-            if (pause) {
-                pauseGame();
-                
-            } else {
-                resumeGameWithCountdown();
-            }
-            });
-        } else {
-            pauseButton.setVisible(false);
-            pauseButton.setEnabled(false);
-        }
+   
 
         pausePanel = new JPanel();
         pausePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
@@ -181,7 +162,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         // Use null layout to position pause panel freely
         setLayout(null);
-        add(pauseButton);
         add(pausePanel);
     }
 
@@ -280,7 +260,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameLoop.stop();
                 placePipeTimer.stop();
 
-                pauseButton.setEnabled(false);
             }           
         }
     }
@@ -293,8 +272,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameStarted = true;
                 gameLoop.start();
                 placePipeTimer.start();
-                pauseButton.setVisible(true);
-                pauseButton.setEnabled(true);
             }
 
             bird.jump();
@@ -337,8 +314,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                 gameStarted = true;
                 gameLoop.start();
                 placePipeTimer.start();
-                pauseButton.setVisible(true);
-                pauseButton.setEnabled(true);
             }
 
             bird.jump();
