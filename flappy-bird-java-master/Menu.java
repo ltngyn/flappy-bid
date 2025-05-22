@@ -57,7 +57,6 @@ public class Menu extends JPanel implements KeyListener{
         });
         cloudTimer.start();
 
-
         // Title
         JLabel title = new JLabel("FLAPPY BIRD");
         title.setForeground(Color.WHITE);
@@ -130,7 +129,6 @@ public class Menu extends JPanel implements KeyListener{
             text.setBounds(20, 60 + i * 40, 225, 30);
             helpPanel.add(text);
         }
-
 
         // Close help panel button 
         helpCloseButton = new JButton(new ImageIcon("xCloseIcon.png"));
