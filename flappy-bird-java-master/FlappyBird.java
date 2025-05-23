@@ -272,8 +272,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         if (!gameStarted) {
             g.drawString("READY!!!", 120, boardHeight / 2 - 50);
-        // } else if (gameOver) {
-        //     g.drawString("SCORE: " + (int) score, 50, 200);
         } else {
             g.drawString(String.valueOf((int) score), 10, 45);
         }
@@ -310,6 +308,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             if (bgX2 + boardWidth <= 0) {
                 bgX2 = bgX1 + boardWidth;
             }
+            
         } else {
             bird.idleUpdate();
         }
