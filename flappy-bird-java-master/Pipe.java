@@ -1,7 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Image;
 
-public class Pipe extends GameObject {
+public class Pipe extends GameObject implements Updatable{
     public boolean passed = false;
     private float velocityX = -3;
 
