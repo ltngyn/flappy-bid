@@ -23,6 +23,7 @@ public class Bird extends GameObject {
         y = startY + (int)(5 * Math.sin(idleTime));
     }
 
+    @Override
     public void update() {
         velocityY += gravity;
         y += velocityY;
