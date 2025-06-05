@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
-public class FlappyBird extends JPanel implements ActionListener, KeyListener, MouseListener{
+public class FlappyBird extends GameScreen implements ActionListener, MouseListener{
     int boardWidth = 360;
     int boardHeight = 640;
 
@@ -59,14 +59,17 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
     Random random = new Random();
 
-    public FlappyBird(JFrame gameFrame) {
-        setPreferredSize(new Dimension(boardWidth, boardHeight));
-        setFocusable(true);
-        addKeyListener(this);
+    public FlappyBird(JFrame frame) {
+        super(frame);
+        setupUI();
         addMouseListener(this);
         loadHighScore();
 
-        // Load assets
+    }
+
+    //Load UI
+    @Override
+    public void setupUI() {
         movingBackgroundImg = new ImageIcon(getClass().getResource("./flappybirdbg.png")).getImage();
         birdImg = new ImageIcon(getClass().getResource("./flappybird.png")).getImage();
         topPipeImg = new ImageIcon(getClass().getResource("./toppipe.png")).getImage();
@@ -149,14 +152,14 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             cleanUp();
 
             // Remove the game panel from the frame
-            gameFrame.getContentPane().removeAll();
+            frame.getContentPane().removeAll();
 
             // Add the Menu panel to the same frame
-            gameFrame.add(new Menu(gameFrame));
+            frame.add(new Menu(frame));
 
             // Refresh the frame to show the menu
-            gameFrame.revalidate();
-            gameFrame.repaint();
+            frame.revalidate();
+            frame.repaint();
         });
 
         quitButton.addActionListener(e -> {
@@ -190,12 +193,12 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         resultMenuButton.addActionListener(e -> {
             cleanUp();
 
-            gameFrame.getContentPane().removeAll();
+            frame.getContentPane().removeAll();
 
-            gameFrame.add(new Menu(gameFrame));
+            frame.add(new Menu(frame));
 
-            gameFrame.revalidate();
-            gameFrame.repaint();
+            frame.revalidate();
+            frame.repaint();
         });
         
         resultRestartButton = new JButton("RESTART");
