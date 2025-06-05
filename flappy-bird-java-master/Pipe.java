@@ -14,6 +14,7 @@ public class Pipe extends GameObject {
         g.drawImage(img, x, y, width, height, null);
     }
 
+    @Override
     public void update() {
         x += velocityX;
     }
