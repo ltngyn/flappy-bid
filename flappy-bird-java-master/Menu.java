@@ -1,11 +1,10 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-public class Menu extends JPanel implements KeyListener{
-    private JFrame parentFrame;
+public class Menu extends GameScreen{
+    private JFrame frame;
 
     private JButton startButton;
     private JButton helpButton;
@@ -14,12 +13,15 @@ public class Menu extends JPanel implements KeyListener{
     private JButton helpCloseButton;
     private boolean help = false;
 
-    public Menu(JFrame parentFrame) {
-        this.parentFrame = parentFrame;
-        setLayout(null);
-        setPreferredSize(new Dimension(360, 640));
-        addKeyListener(this);
+    public Menu(JFrame frame) {
+        this.frame = frame;
+        super(frame);
+        setupUI();
+    }
 
+    //Load UI
+    @Override
+    public void setupUI() {
         //Layer
         JLayeredPane layer = new JLayeredPane();
         layer.setBounds(0, 0, 360, 640);
@@ -155,11 +157,10 @@ public class Menu extends JPanel implements KeyListener{
         layer.add(quitButton, Integer.valueOf(6));
 
         quitButton.addActionListener(e -> System.exit(0));
-        
     }
 
     public void launchGame() {
-        parentFrame.dispose();
+        frame.dispose();
 
         JFrame gameFrame = new JFrame("Flappy Bird");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
