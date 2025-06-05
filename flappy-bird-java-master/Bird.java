@@ -1,7 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Image;
 
-public class Bird extends GameObject {
+public class Bird extends GameObject implements Updatable{
     public double velocityY = 0;
     public double gravity = 0.8;
 
