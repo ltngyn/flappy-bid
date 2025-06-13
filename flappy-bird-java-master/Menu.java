@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
 import javax.swing.*;
 
 public class Menu extends GameScreen{
@@ -13,9 +12,9 @@ public class Menu extends GameScreen{
     private JButton helpCloseButton;
     private boolean help = false;
 
-    public Menu(JFrame frame) {
-        this.frame = frame;
+    public Menu (JFrame frame) {
         super(frame);
+        this.frame = frame;
         setupUI();
     }
 
@@ -28,17 +27,17 @@ public class Menu extends GameScreen{
         add(layer);
 
         // Background
-        JLabel background = new JLabel(new ImageIcon("flappybirdbg.png"));
+        JLabel background = new JLabel(new ImageIcon(getClass().getResource("./flappybirdbg.png")));
         background.setBounds(0, 0, 360, 640);
         background.setLayout(null);
         layer.add(background, Integer.valueOf(1));
 
         // Two cloud layers for seamless looping
-        JLabel cloud1 = new JLabel(new ImageIcon("cloud.png"));
+        JLabel cloud1 = new JLabel(new ImageIcon(getClass().getResource("./cloud.png")));
         cloud1.setBounds(0, -80, 360, 640);
         layer.add(cloud1, Integer.valueOf(2));
 
-        JLabel cloud2 = new JLabel(new ImageIcon("cloud.png"));
+        JLabel cloud2 = new JLabel(new ImageIcon(getClass().getResource("./cloud.png")));
         cloud2.setBounds(360, -80, 360, 640);
         layer.add(cloud2, Integer.valueOf(2));
 
@@ -133,7 +132,7 @@ public class Menu extends GameScreen{
         }
 
         // Close help panel button 
-        helpCloseButton = new JButton(new ImageIcon("xCloseIcon.png"));
+        helpCloseButton = new JButton(new ImageIcon(getClass().getResource("./xCloseIcon.png")));
         helpCloseButton.setBounds(265, 165, 30, 30);
         helpCloseButton.setFocusable(false);
         helpCloseButton.setBackground(new Color(250, 55, 55)); 
